@@ -85,14 +85,14 @@ Then open http://localhost:5173
 
 (frontend expects backend running on port 4000, if you change that set `VITE_API_URL` in a `frontend/.env`)
 
-## Login for testing
+## Trying it out
 
-There's a teacher account already seeded in:
+There's no pre-made login for either role - just sign up as whichever you want to try:
 
-- Email: sara.iyer@edubridge.test
-- Password: password123
+- **Student signup:** just needs a name, email, and password.
+- **Teacher signup:** needs a name, email, password, subject, and standard/class you teach.
 
-No student account is pre-made, just use signup, it works and creates a real account.
+Both create a real account through the backend, so feel free to make as many as you want to test different flows.
 
 Test codes you can join right away without logging in:
 
