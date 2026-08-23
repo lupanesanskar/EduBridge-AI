@@ -7,35 +7,33 @@ An AI-assisted learning platform with two roles:
 
 This repo contains **both** the frontend and the backend, wired together, so the whole thing runs as a real working app — not just a UI mock.
 
-```
 edubridge/
-├── backend/     Node.js + Express API (JSON-file database, zero setup)
-└── frontend/    React + Vite + Tailwind UI
-```
+├── backend/ Node.js + Express API (JSON-file database, zero setup)
+└── frontend/ React + Vite + Tailwind UI
+
 
 ---
 
 ## 1. Architecture (for your submission write-up / video)
 
-```
-┌─────────────────┐        REST/JSON        ┌──────────────────┐
-│   React (Vite)   │ ─────────────────────▶ │  Express API      │
-│  frontend/src    │ ◀───────────────────── │  backend/src      │
-└─────────────────┘                          └──────────┬───────┘
-                                                          │
-                                              ┌───────────▼───────────┐
-                                              │  aiService.js          │
-                                              │  - Offline fallback    │
-                                              │    (works with NO key) │
-                                              │  - Optional: real      │
-                                              │    Anthropic API call  │
-                                              └───────────┬───────────┘
-                                                          │
-                                              ┌───────────▼───────────┐
-                                              │  JSON file "database"  │
-                                              │  backend/src/data/     │
-                                              └────────────────────────┘
-```
+┌─────────────────┐ REST/JSON ┌──────────────────┐
+│ React (Vite) │ ─────────────────────▶ │ Express API │
+│ frontend/src │ ◀───────────────────── │ backend/src │
+└─────────────────┘ └──────────┬───────┘
+│
+┌───────────▼───────────┐
+│ aiService.js │
+│ - Offline fallback │
+│ (works with NO key) │
+│ - Optional: real │
+│ Anthropic API call │
+└───────────┬───────────┘
+│
+┌───────────▼───────────┐
+│ JSON file "database" │
+│ backend/src/data/ │
+└────────────────────────┘
+
 
 **Why a JSON-file database?** For a hackathon offline round you need something that a judge can run in 30 seconds with zero installs (no Postgres/Mongo to set up, no native binary compilation). It behaves like a real DB (reads/writes persist across restarts) and can be swapped for Postgres/Mongo later with only `backend/src/store.js` changing.
 
@@ -48,7 +46,7 @@ edubridge/
 | POST | `/api/auth/signup` | Student registration |
 | POST | `/api/auth/login` | Student or teacher login |
 | POST | `/api/chat` | Doubt chat → grounded answer + sources |
-| GET | `/api/teachers?query=` | TeachHub: search teachers (now includes `rating`/`rank`) |
+| GET | `/api/teachers?query=` | TeachHub: search teachers (now includes rating/rank) |
 | POST | `/api/tests/join` | Join a live test by code (no login) |
 | POST | `/api/tests/:id/attempts` | Submit answers → graded instantly |
 | POST | `/api/tests/generate` | AI-generate MCQs for a subject/chapters (max 100) |
@@ -66,7 +64,7 @@ edubridge/
 
 - **Student side** → "Ask Teachers" (from the floating nav on Doubt Chat, separate from the AI chat): post a doubt with a subject/chapter, see every teacher's answer as it comes in, and like the ones that actually help.
 - **Teacher side** → sidebar → **Solve Doubt**: browse Open / Answered / All public doubts and reply. Multiple teachers can answer the same doubt.
-- Each like a teacher earns becomes their **rating**, shown on their TeachHub profile and search card, plus a **rank** (`#1`, `#2`, ...) computed live from `GET /api/doubts/leaderboard`.
+- Each like a teacher earns becomes their **rating**, shown on their TeachHub profile and search card, plus a **rank** (#1, #2, ...) computed live from `GET /api/doubts/leaderboard`.
 - This is entirely separate from the existing AI Doubt Chat — that one still talks to `aiService.js` only.
 
 ---
@@ -77,31 +75,29 @@ You need **Node.js 18+** installed. Two terminals — one for the backend, one f
 
 ### Terminal 1 — backend
 
-```bash
 cd backend
 npm install
 npm start
-```
+
 
 You should see:
-```
+
 EduBridge backend running on http://localhost:4000
 AI mode: OFFLINE fallback (no ANTHROPIC_API_KEY set)
-```
+
 
 Optional — to use a real LLM instead of the offline fallback:
-```bash
+
 cp .env.example .env
-# then edit .env and paste: ANTHROPIC_API_KEY=sk-ant-...
-```
+
+then edit .env and paste: ANTHROPIC_API_KEY=sk-ant-...
 
 ### Terminal 2 — frontend
 
-```bash
 cd frontend
 npm install
 npm run dev
-```
+
 
 Open the URL it prints — **http://localhost:5173**.
 
@@ -139,56 +135,7 @@ This shows: real auth, a real (if offline-mocked) AI pipeline, real persistence,
 
 ---
 
-## 4. Arranging the files in VS Code
-
-1. Unzip/copy this whole `edubridge` folder anywhere on your machine (e.g. Desktop).
-2. Open **VS Code** → `File > Open Folder...` → select the **`edubridge`** folder itself (the one containing `backend/`, `frontend/`, and this `README.md`) — not `backend` or `frontend` individually. This lets VS Code show both projects side by side in one Explorer sidebar:
-
-   ```
-   edubridge/                 ← open THIS folder in VS Code
-   ├── backend/
-   │   ├── src/
-   │   ├── package.json
-   │   └── .env.example
-   ├── frontend/
-   │   ├── src/
-   │   │   ├── App.jsx
-   │   │   ├── api.js
-   │   │   └── main.jsx
-   │   └── package.json
-   ├── .gitignore
-   └── README.md
-   ```
-
-3. Open **two integrated terminals** in VS Code (`` Ctrl/Cmd + ` `` then click the `+` to split):
-   - Terminal A: `cd backend && npm install && npm start`
-   - Terminal B: `cd frontend && npm install && npm run dev`
-4. Ctrl/Cmd-click the `http://localhost:5173` link that appears in Terminal B — it opens in your default browser. **That browser window is what you screen-record.**
-5. Keep both terminals visible (or minimized but running) throughout the recording — if either one is closed, that half of the app stops working.
-
-### Quick sanity check before recording
-- Visit `http://localhost:4000/api/health` in a browser tab — you should see `{"status":"ok",...}`. If it errors, the backend isn't running.
-- Only after that works, open `http://localhost:5173` and walk through the demo flow above.
-
----
-
-## 5. Pushing to GitHub for submission
-
-```bash
-cd edubridge
-git init
-git add .
-git commit -m "EduBridge AI — hackathon prototype (frontend + backend)"
-git branch -M main
-git remote add origin <your-empty-github-repo-url>
-git push -u origin main
-```
-
-The `.gitignore` already excludes `node_modules/`, `.env`, and the generated `db.json`, so the repo stays small and never leaks a real API key.
-
----
-
-## 6. What's mocked vs. real (be upfront about this to judges)
+## 4. What's mocked vs. real (be upfront about this to judges)
 
 - **Real**: authentication, test generation → publish → join-by-code → grading → leaderboard, all persisted via the backend API — nothing is faked in the React state anymore.
 - **Offline-mocked by design**: the AI layer (`aiService.js`) uses a small hand-built knowledge base and question bank when no API key is configured, so the demo is 100% reliable without internet/API access. Wiring in `ANTHROPIC_API_KEY` flips it to real LLM calls with no other code changes.
