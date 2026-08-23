@@ -1,6 +1,6 @@
 # EduBridge AI
 
-Hackathon prototype built for OOSC 4.0 Hackathon by our team Orbit X.
+Hackathon prototype built for OOSC 4.0 Hackathon (IIIT Allahabad) by our team Orbit X.
 
 ## What is this
 
