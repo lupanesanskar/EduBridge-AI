@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+
+# env files (never commit real API keys)
+.env
+.env.local
+
+# generated "database" (JSON file store) — starts fresh from seed data
+backend/src/data/db.json
+
+# editor/OS junk
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.log
+npm-debug.log*
