@@ -123,3 +123,5 @@ Being honest here since judges will ask anyway:
 ## Team - Orbit X
 
 - Rajdeep Waragade
+- Sanskar Lupane
+- Piyush Dhole
